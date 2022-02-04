@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.RegularExpressions;
 using Spectre.Console;
 
@@ -17,8 +17,13 @@ string[] pathFilters =
     ".git" ,
     ".vs" ,
     ".vscode" ,
+    "Bootstrapper" ,
+    "bootstrap" ,
+    ".ps1" ,
+    ".sh" ,
+    ".fsx"
 };
-string projectName , shortProjectName;
+string projectName = "GingerCode" , shortProjectName = "ginger-code";
 
 #endregion
 
@@ -70,7 +75,7 @@ void GetProjectName()
 {
     projectName = AnsiConsole.Prompt(
         new TextPrompt< string >( "What would you like to name your project?" )
-            .DefaultValue( defaultProjectName )
+            .DefaultValue( projectName )
             .Validate(
                 p =>
                 {
@@ -78,12 +83,10 @@ void GetProjectName()
                     {
                         if ( string.IsNullOrEmpty( p ) )
                         {
-                            return ValidationResult.Error(
-                                "[red]You must provide a name for the project[/]"
-                            );
+                            return ValidationResult.Success();
                         }
 
-                        if ( Regex.IsMatch( p , @"[a-z_A-Z]\w+(?:\.?[a-z_A-Z]\w+)*" ) )
+                        if ( !Regex.IsMatch( p , @"[a-z_A-Z]\w+(?:\.?[a-z_A-Z]\w+)*" ) )
                         {
                             return ValidationResult.Error(
                                 "[red]The given project name is invalid. Try to conform to the regex: \"[[a-z_A-Z]]\\w+(?:\\.?[[a-z_A-Z]]\\w+)*\"[/]"
@@ -115,7 +118,7 @@ void GetShortProjectName()
     shortProjectName = AnsiConsole.Prompt(
         new TextPrompt< string >(
                 "What would you like to use as a short identifier for your project?"
-            ).DefaultValue( defaultShortProjectName )
+            ).DefaultValue( shortProjectName )
              .Validate(
                  p =>
                  {
@@ -123,12 +126,10 @@ void GetShortProjectName()
                      {
                          if ( string.IsNullOrEmpty( p ) )
                          {
-                             return ValidationResult.Error(
-                                 "[red]You must provide a short identifier for the project[/]"
-                             );
+                             return ValidationResult.Success();
                          }
 
-                         if ( Regex.IsMatch( p , @"[a-z_A-Z]\w+(?:\.?[a-z_A-Z]\w+)*" ) )
+                         if ( !Regex.IsMatch( p , @"[a-z_A-Z]\w+(?:\.?[a-z_A-Z]\w+)*" ) )
                          {
                              return ValidationResult.Error(
                                  "[red]The given project name is invalid. Try to conform to the regex: \"[[a-z_A-Z]]\\w+(?:\\-?[[a-z_A-Z]]\\w+)*\"[/]"
@@ -182,44 +183,62 @@ string NormalizePath( string path )
 //There shouldn't be any files large enough to run out of memory doing this
 void RenameInFile( string filePath )
 {
+    PrintFileContentUpdate( filePath );
     File.WriteAllText(
         filePath ,
         UpdateString( File.ReadAllText( filePath , Encoding.UTF8 ) ) ,
         Encoding.UTF8
     );
-    PrintFileContentUpdate( filePath );
 }
 
 void RenameFile( string filePath )
 {
+    if ( !RequiresUpdate( filePath ) ) return;
     var newPath = UpdateString( NormalizePath( filePath ) );
-    File.Move( filePath , newPath );
+    if ( Path.GetFullPath( filePath ) == Path.GetFullPath( newPath ) )
+        return;
     PrintPathChange( filePath , newPath );
+    File.Move( filePath , newPath );
 }
 
 void UpdateFile( string filePath )
 {
+    if ( ShouldIgnore( filePath ) ) return;
     RenameInFile( filePath );
     RenameFile( filePath );
 }
 
-void RenameDirectory( string directoryPath )
+string RenameDirectory( string directoryPath )
 {
+    if ( !RequiresUpdate( directoryPath ) ) return directoryPath;
     var newPath = UpdateString( NormalizePath( directoryPath ) );
-    Directory.Move( directoryPath , newPath );
+    if ( Path.GetFullPath( directoryPath ) == Path.GetFullPath( newPath ) )
+        return directoryPath;
     PrintPathChange( directoryPath , newPath );
+    Directory.Move( directoryPath , newPath );
+    return newPath;
 }
 
 bool ShouldIgnore( string path )
-    => Path.GetFullPath( path )
-           .Split(
-               new[] { Path.PathSeparator , Path.AltDirectorySeparatorChar } ,
-               StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
-           )
-           .Any( p => pathFilters.Contains( p ) );
+    => pathFilters.Any(
+        s => path.Contains(
+                 s + Path.DirectorySeparatorChar ,
+                 StringComparison.InvariantCultureIgnoreCase
+             )
+             || path.Contains(
+                 s + Path.AltDirectorySeparatorChar ,
+                 StringComparison.InvariantCultureIgnoreCase
+             )
+             || path.StartsWith( s )
+             || path.EndsWith( s )
+    );
 
 bool ShouldInclude( string path )
     => !ShouldIgnore( path );
+
+bool RequiresUpdate( string str )
+    => str.Contains( defaultProjectName , StringComparison.InvariantCultureIgnoreCase )
+       || str.Contains( defaultShortProjectName , StringComparison.InvariantCultureIgnoreCase );
 
 void UpdateFilesInDirectory( string directoryPath )
 {
@@ -241,9 +260,10 @@ void UpdateSubdirectories( string directoryPath )
 
 void UpdateDirectory( string directoryPath )
 {
-    UpdateFilesInDirectory( directoryPath );
-    RenameDirectory( directoryPath );
-    UpdateSubdirectories( directoryPath );
+    if ( ShouldIgnore( directoryPath ) ) return;
+    var newPath = RenameDirectory( directoryPath );
+    UpdateSubdirectories( newPath );
+    UpdateFilesInDirectory( newPath );
 }
 
 void UpdateFilesAndDirectories()
@@ -256,9 +276,7 @@ void UpdateFilesAndDirectories()
                    _ =>
                    {
                        var path = Environment.CurrentDirectory;
-                       UpdateFilesInDirectory( path );
-                       var subDirectories = Directory.EnumerateDirectories( path );
-                       Parallel.ForEach( subDirectories , UpdateDirectory );
+                       UpdateDirectory( path );
                    }
                );
 }
@@ -267,6 +285,13 @@ void UpdateFilesAndDirectories()
 
 #region Program
 
+//
+// foreach ( var s in Directory.EnumerateDirectories( Environment.CurrentDirectory )   )
+// {
+//     RenameDirectory( s );
+//     Console.WriteLine( s );
+// }
+// Console.WriteLine(  );
 Greet();
 GetProjectName();
 GetShortProjectName();
