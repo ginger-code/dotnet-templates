@@ -1,0 +1,38 @@
+﻿@page "/account/resend-confirmation"
+@model ResendEmailConfirmationModel
+@{
+    ViewData[ "Title" ] = "Resend email confirmation";
+}
+
+<h1 class="title">@ViewData[ "Title" ]</h1>
+<h2>Enter your email.</h2>
+<hr />
+<div class="container">
+    <div class="column is-half is-offset-one-quarter">
+        <form method="post">
+            <div asp-validation-summary="All "
+                 class="is-danger">
+            </div>
+            <div class="field">
+                <input aria-required="true"
+                       asp-for="Input.Email "
+                       class="input"
+                       type="email" />
+                <label asp-for="Input.Email "
+                       class="label">
+                </label>
+                <span asp-validation-for="Input.Email "
+                      class="is-danger">
+                </span>
+            </div>
+            <button class="button is-link"
+                    type="submit">
+                Resend
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,19 @@
+{
+    "name": "ginger-code-site",
+    "version": "0.1.0",
+    "description": "Views and assets for GingerCodeSite",
+    "main": "index.js",
+    "scripts": {
+        "scss": "gulp sass",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "ginger-code",
+    "license": "MIT",
+    "devDependencies": {
+        "gulp": "^4.0.2",
+        "gulp-concat": "^2.6.1",
+        "gulp-sass": "^5.1.0",
+        "node-sass": "^7.0.1",
+        "sass": "^1.49.0"
+    }
+}

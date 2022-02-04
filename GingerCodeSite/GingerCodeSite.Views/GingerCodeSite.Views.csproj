@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <!--        <RootNamespace>GingerCodeSite</RootNamespace>-->
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\GingerCodeSite.Data.Access\GingerCodeSite.Data.Access.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Data.Services\GingerCodeSite.Data.Services.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Data\GingerCodeSite.Data.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Services\GingerCodeSite.Services.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Util\GingerCodeSite.Util.csproj" />
+    </ItemGroup>
+
+</Project>

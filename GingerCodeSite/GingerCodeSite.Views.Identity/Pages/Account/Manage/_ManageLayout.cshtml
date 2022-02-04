@@ -1,0 +1,29 @@
+﻿@{
+    if ( ViewData.TryGetValue( "ParentLayout" , out var parentLayout ) )
+    {
+        Layout = (string) parentLayout!;
+    }
+    else
+    {
+        Layout = "_AuthLayout";
+    }
+}
+
+<h1 class="title">Manage your account</h1>
+
+<div>
+    <h2>Change your account settings</h2>
+    <hr />
+    <div class="container">
+        <div class="column">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="column">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await RenderSectionAsync( "Scripts" , false )
+}

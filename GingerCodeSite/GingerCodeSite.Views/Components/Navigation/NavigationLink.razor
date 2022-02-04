@@ -1,0 +1,28 @@
+<NavLink ActiveClass="@(ActiveClass )"
+    class="@( NavItem ? "navbar-item" : AnchorClass )"
+    href="@Route"
+    Match="@(Match )">
+    @ChildContent
+</NavLink>
+
+@code {
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string Route { get; set; } = null!;
+
+    [Parameter]
+    public string ActiveClass { get; set; } = "is-active";
+
+    [Parameter]
+    public NavLinkMatch Match { get; set; } = NavLinkMatch.All;
+
+    [Parameter]
+    public bool NavItem { get; set; } = true;
+
+    [Parameter]
+    public string AnchorClass { get; set; } = "button is-light";
+
+}

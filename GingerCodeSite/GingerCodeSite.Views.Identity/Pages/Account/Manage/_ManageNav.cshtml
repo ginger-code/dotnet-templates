@@ -1,0 +1,46 @@
+@inject SignInManager< GingerCodeSiteUser > SignInManager
+@{
+    var hasExternalLogins = ( await SignInManager.GetExternalAuthenticationSchemesAsync() ).Any();
+}
+<ul class="navbar-item has-dropdown is-hoverable">
+    <a class="navbar-link">
+        Manage
+    </a>
+    <div class="navbar-dropdown">
+        <a asp-page="./Index"
+           class="navbar-item @ManageNavPages.IndexNavClass( ViewContext )"
+           id="profile">
+            Profile
+        </a>
+        <a asp-page="./Email"
+           class="navbar-item @ManageNavPages.EmailNavClass( ViewContext )"
+           id="email">
+            Email
+        </a>
+        <a asp-page="./ChangePassword"
+           class="navbar-item @ManageNavPages.ChangePasswordNavClass( ViewContext )"
+           id="change-password">
+            Password
+        </a>
+        @if ( hasExternalLogins )
+        {
+            <a asp-page="./ExternalLogins"
+               class="navbar-item @ManageNavPages.ExternalLoginsNavClass( ViewContext )"
+               id="external-login">
+                External logins
+            </a>
+        }
+        <a asp-page="./TwoFactorAuthentication"
+           class="navbar-item @ManageNavPages.TwoFactorAuthenticationNavClass( ViewContext )"
+           id="two-factor">
+            Two-factor authentication
+        </a>
+        <a asp-page="./PersonalData"
+           class="navbar-item @ManageNavPages.PersonalDataNavClass( ViewContext )"
+           id="personal-data">
+            Personal data
+        </a>
+
+
+    </div>
+</ul>

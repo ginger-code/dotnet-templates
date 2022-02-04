@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@(ViewData.ContainsKey( "Title" ) ? $"GingerCodeSite | {ViewData[ "Title" ]}" : "GingerCodeSite")</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1"
+        name="viewport">
+    <link href="~/css/GingerCodeSite.css"
+        rel="stylesheet" />
+    <component render-mode="ServerPrerendered "
+        type="typeof( HeadOutlet ) " />
+</head>
+<body>
+@RenderBody()
+</body>
+@await RenderSectionAsync( "Scripts" , false )
+</html>

@@ -1,0 +1,11 @@
+<Project>
+    <PropertyGroup>
+        <Authors>Chris Davis</Authors>
+        <RepositoryUrl>https://github.com/ginger-code/GingerCodeSite</RepositoryUrl>
+        <Description>
+            A bare-bones, scaffolded Asp.Net Core project template with preconfigured Identity, SignalR, Blazor Server, Swagger, and more!
+        </Description>
+        <Copyright>Copyright ©2022 Chris Davis (ginger-code)</Copyright>
+        <Version>0.1.0</Version>
+    </PropertyGroup>
+</Project>

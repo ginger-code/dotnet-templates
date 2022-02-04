@@ -1,0 +1,83 @@
+﻿<CascadingAuthenticationState>
+    <nav aria-label="main navigation"
+        class="navbar"
+        role="navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item"
+                href="/">
+                <img alt="brand logo"
+                    height="28"
+                    src="https://bulma.io/images/bulma-logo.png"
+                    width="112">
+            </a>
+
+            <a aria-expanded="false"
+                aria-label="menu"
+                class="@NavbarBurgerCssClass"
+                data-target="navbarBasicExample"
+                @onclick="ToggleNavMenu "
+                role="button">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="@NavbarMenuCssClass">
+            <div class="navbar-start">
+                <NavigationLink Route="/">
+                    <span aria-hidden="true"
+                        class="oi oi-home">
+                    </span>
+                    Home
+                </NavigationLink>
+                <NavigationLink Route="/counter">
+                    <span aria-hidden="true"
+                        class="oi oi-home">
+                    </span>
+                    Counter
+                </NavigationLink>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <AuthorizeView>
+                            <Authorized>
+                                <NavigationLink AnchorClass="button is-info"
+                                    NavItem="false "
+                                    Route="/account/logout">
+                                    Log Out
+                                </NavigationLink>
+                            </Authorized>
+                            <NotAuthorized>
+                                <NavigationLink AnchorClass="button is-primary"
+                                    NavItem="false "
+                                    Route="/account/register">
+                                    Register
+                                </NavigationLink>
+                                <NavigationLink AnchorClass="button is-info"
+                                    NavItem="false "
+                                    Route="/account/login">
+                                    Log In
+                                </NavigationLink>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</CascadingAuthenticationState>
+
+@code {
+    private bool _collapseNavbarBurger = true;
+
+    private string NavbarBurgerCssClass => _collapseNavbarBurger ? "navbar-burger" : "navbar-burger is-active";
+    private string NavbarMenuCssClass => _collapseNavbarBurger ? "navbar-menu" : "navbar-menu is-active";
+
+    private void ToggleNavMenu()
+    {
+        _collapseNavbarBurger = !_collapseNavbarBurger;
+    }
+
+}

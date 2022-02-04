@@ -1,0 +1,13 @@
+@{
+    Layout = "_Layout";
+}
+<component render-mode="ServerPrerendered"
+    type="@typeof( NavigationMenu )" />
+
+<section>
+    <div class="container">
+        @RenderBody()
+    </div>
+</section>
+
+@await RenderSectionAsync( "Scripts" , false )

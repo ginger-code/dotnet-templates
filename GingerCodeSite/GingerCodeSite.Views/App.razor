@@ -1,0 +1,27 @@
+@using System.Reflection
+<CascadingAuthenticationState>
+    <Router AppAssembly="AppAssembly ">
+        <Found Context=" routeData ">
+            <AuthorizeRouteView DefaultLayout="DefaultLayoutType "
+                RouteData="routeData " />
+            <FocusOnNavigate RouteData="routeData "
+                Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="DefaultLayoutType ">
+                <p class="is-danger"
+                    role="alert">
+                    Sorry, there's nothing at this address.
+                </p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+@code{
+
+    static Assembly AppAssembly => typeof( App ).Assembly;
+    static Type DefaultLayoutType => typeof( MainLayout );
+
+}

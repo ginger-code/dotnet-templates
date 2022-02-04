@@ -1,0 +1,61 @@
+﻿@page "/account/login-two-factor"
+@model LoginWith2faModel
+@{
+    ViewData[ "Title" ] = "Two-factor authentication";
+}
+
+<h1 class="title">@ViewData[ "Title" ]</h1>
+<hr />
+<p>Your login is protected with an authenticator app. Enter your authenticator code below.</p>
+<div class="container">
+    <div class="column">
+        <form asp-route-returnUrl="@Model.ReturnUrl"
+              method="post">
+            <input asp-for="RememberMe "
+                   type="hidden" />
+            <div asp-validation-summary="ModelOnly "
+                 class="is-danger">
+            </div>
+            <div class="field">
+                <input asp-for="Input.TwoFactorCode "
+                       autocomplete="off"
+                       class="input"
+                       type="text" />
+                <label asp-for="Input.TwoFactorCode "
+                       class="label">
+                </label>
+                <span asp-validation-for="Input.TwoFactorCode "
+                      class="is-danger">
+                </span>
+            </div>
+            <div>
+                <div class="checkbox">
+                    <label asp-for="Input.RememberMachine "
+                           class="label">
+                        <input asp-for="Input.RememberMachine "
+                               type="checkbox" />
+                        @( Html.DisplayNameFor( m => m.Input.RememberMachine ) )
+                    </label>
+                </div>
+            </div>
+            <div>
+                <button class="button is-link"
+                        type="submit">
+                    Log in
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<p>
+    Don't have access to your authenticator device? You can
+    <a asp-page="./LoginWithRecoveryCode"
+       asp-route-returnUrl="@Model.ReturnUrl"
+       id="recovery-code-login">
+        log in with a recovery code
+    </a>.
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

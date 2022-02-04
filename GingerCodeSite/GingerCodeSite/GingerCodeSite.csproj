@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="GingerCodeSite.Startup" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\GingerCodeSite.Api\GingerCodeSite.Api.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Startup\GingerCodeSite.Startup.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.SignalR\GingerCodeSite.SignalR.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Data\GingerCodeSite.Data.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Data.Context\GingerCodeSite.Data.Context.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Data.Services\GingerCodeSite.Data.Services.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Services\GingerCodeSite.Services.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Views\GingerCodeSite.Views.csproj" />
+        <ProjectReference Include="..\GingerCodeSite.Views.Identity\GingerCodeSite.Views.Identity.csproj" />
+    </ItemGroup>
+
+</Project>
