@@ -1,3 +1,3 @@
 #!/bin/bash
 
-dotnet fsi bootstrapper.fsx
+dotnet run --project ./Bootstrapper/Bootstrapper.csproj
