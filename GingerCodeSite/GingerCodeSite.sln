@@ -30,7 +30,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		README.md = README.md
-		bootstrapper.fsx = bootstrapper.fsx
 		bootstrap.ps1 = bootstrap.ps1
 		bootstrap.sh = bootstrap.sh
 		Directory.Build.props = Directory.Build.props
